@@ -1,0 +1,48 @@
+.steps-list {
+  list-style: none;
+  font-size: 30px;
+  width: 75%;
+  display: inline-block;
+}
+
+.mask-img {
+  width: 250px !important;
+  position: relative;
+  bottom: 50%;
+}
+
+
+
+.margin-top-100{
+    margin-top: 100px !important;
+}
+
+.list-div {
+  margin-top: 150px !important;
+}
+
+.doctor-img {
+  width: 400px;
+}
+
+.doctor-list li {
+  margin: 14px auto;
+}
+
+.time-img {
+  width: 300px;
+}
+
+.padding-top {
+  padding-top: 100px;
+}
+
+
+@media only screen and (max-width: 1500px) {
+  .mask-img {
+    width: 250px;
+    position: static;
+   
+}
+
+}

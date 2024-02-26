@@ -1,0 +1,14 @@
+
+
+.highlight {
+  color: white;
+  background-color: red;
+}
+.bg-calender {
+  /* background-color: blue; */
+  background-image: url("/src/assets/img/doctor.jpg");
+  background-repeat: no-repeat;
+  background-size: cover; 
+  height: 450px;
+  background-position: center center;
+}

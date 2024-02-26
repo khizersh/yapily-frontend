@@ -1,0 +1,84 @@
+.header-center-element {
+  margin-left: 35%;
+}
+
+.margin-header {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.image-building {
+  width: 559px;
+}
+.image-meter {
+  width: 300px;
+}
+
+.homeName {
+  margin-left: 150px;
+  text-decoration: none;
+}
+
+.header-element {
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+.d-px-5 {
+  padding-left: 8rem !important;
+  padding-right: 8rem !important;
+}
+
+@media screen and (max-width: 900px) {
+  .header-center-element {
+    margin-left: auto;
+  }
+
+  .font-mbl {
+    font-size: 40px !important;
+  }
+
+  .image-building {
+    width: 250px;
+  }
+  .image-meter {
+    width: 150px;
+  }
+
+  .d-px-5 {
+    padding-left: 1px !important;
+    padding-right: 1px !important;
+  }
+
+  .m-mt-5 {
+    margin-top: 3rem !important;
+  }
+
+  .m-text-center {
+    text-align: center !important;
+  }
+
+  .font-75 {
+    font-size: 30px !important;
+  }
+
+  .home-images {
+    width: 100px;
+  }
+
+  .steps-list {
+    list-style: none;
+    font-size: 20px !important;
+    width: 100% !important;
+    display: inline-block;
+  }
+
+  .mask-img {
+    width: 150px !important;
+    position: static;
+  }
+
+  .doctor-img {
+    width: 150px !important;
+}
+}
