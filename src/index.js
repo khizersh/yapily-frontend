@@ -15,6 +15,7 @@ import UserList from "./pages/dashboard/UserList";
 import CustomCalender from "./pages/dashboard/CustomCalender";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Token from "./pages/Token";
+import Success from "./pages/Success";
 // import "./assets/css/"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -25,11 +26,16 @@ root.render(
         <Layout>
           <Route path="/" exact render={(props) => <Home {...props} />} />
           <Route
-            path="/tracker"
+            path="/get-detail"
             exact
-            render={(props) => <Tracker {...props} />}
+            render={(props) => <Token {...props} />}
           />
           <Route
+            path="/success"
+            exact
+            render={(props) => <Success {...props} />}
+          />
+          {/*   <Route
             path="/token"
             exact
             render={(props) => <Token {...props} />}
@@ -53,7 +59,7 @@ root.render(
             path="/dashboard/admin/my-calender"
             exact
             render={(props) => <CustomCalender {...props} />}
-          />
+          /> */}
         </Layout>
       </Switch>
     </BrowserRouter>

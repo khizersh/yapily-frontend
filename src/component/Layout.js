@@ -14,21 +14,14 @@ const Layout = (props) => {
       }
     }
 
-    if(window.innerWidth < 699){
-      setIsMobile(true)
+    if (window.innerWidth < 699) {
+      setIsMobile(true);
     }
   }, []);
 
   return (
     <>
-      {isDashboard ? (
-        <DashboardLayout>{props.children}</DashboardLayout>
-      ) : (
-        <div className="purple-bg ">
-          {isMobile ? <Header /> : <DesktopHeader /> }
-          {props.children}
-        </div>
-      )}
+      <div className="bg-grey">{props.children}</div>
     </>
   );
 };

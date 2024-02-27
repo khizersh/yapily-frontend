@@ -5,17 +5,8 @@ import { BASE_URL, ERROR_IMAGE } from "../service/utility";
 
 const Token = () => {
   const router = useHistory();
-  const [tokenVerified, setTokenVerified] = useState(true);
-  const [changeUser, setChangeUser] = useState({
-    email: "",
-    password: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-  const [email, setEmail] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [request, setRequest] = useState(null);
+  const [consent, setConsent] = useState(null);
 
   function useQuery() {
     const { search } = useLocation();
@@ -24,145 +15,142 @@ const Token = () => {
   let query = useQuery();
 
   useEffect(() => {
-    let token = query.get("token");
+    let token = query.get("consent");
     if (token) {
-      verifyToken(token);
+      const paymentData = JSON.parse(localStorage.getItem("tokenRequest"));
+      setRequest(paymentData);
+
+      setConsent(token);
+      console.log("token :: ", token);
+      console.log("paymentData :: ", paymentData);
     }
-    let email = localStorage.getItem("user-email");
-    console.log("user-email ", email);
-  }, [query.get("token")]);
+  }, []);
 
-  const onChange = (e) => {
-    setChangeUser({ ...changeUser, [e.target.name]: e.target.value });
-  };
+  const onClickAllow = async () => {
+    if (consent) {
+      const requestBody = { consent: consent, request: request.paymentRequest };
 
-  const verifyToken = async (token) => {
-    const response = await fetch(BASE_URL + "/token/validate", {
-      method: "POST",
-      body: JSON.stringify({ token }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    });
-    const data = await response.json();
-    if (data && data.status == "0000") {
-      setTokenVerified(true);
-      localStorage.setItem("user-email", data.data.email);
-      setEmail(data.data.email);
-    } else if (data && data.status == "9999") {
-      swal("Error!", data.message, ERROR_IMAGE).then((m) => {
-        router.push("/signin");
-      });
-    } else {
-      swal("Error!", "Something went wrong!", ERROR_IMAGE).then((m) => {
-        router.push("/signin");
-      });
-    }
-  };
-
-  const onClickChangePassword = () => {
-    const localEmail = JSON.parse(localStorage.getItem("user"));
-
-    if (changeUser.newPassword == changeUser.confirmPassword) {
-      let request = {
-        email: email ? email : JSON.parse(localStorage.getItem("user")),
-        password: changeUser.newPassword,
-      };
-      fetch(BASE_URL + "/user/reset", {
+      const response = await fetch(BASE_URL + "/make-payment", {
         method: "POST",
-        body: JSON.stringify(request),
+        body: JSON.stringify(requestBody),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data && data.status == "0000") {
-            localStorage.setItem("user", JSON.stringify(data.data));
-            swal("Success!", "Password reset successfully!", "success").then(
-              (m) => {
-                router.push("/");
-              }
-            );
-          } else if (data && data.status == "9999") {
-            swal("Error!", data.message, ERROR_IMAGE);
-          } else {
-            swal("Error!", "Something went wrong!", ERROR_IMAGE);
-          }
-        });
-    } else {
-      swal("Oops!", "Password not matched.", ERROR_IMAGE);
+      });
+      const data = await response.json();
+
+      if (data && data.status == "0000") {
+        if (data.data?.data?.id) {
+          let paymentId = data.data?.data?.id;
+          await getPaymentDetail(consent, paymentId);
+        }
+      } else if (data && data.status == "9999") {
+        swal("Error!", data.message, ERROR_IMAGE);
+      } else {
+        swal("Error!", "Something went wrong!", ERROR_IMAGE);
+      }
     }
   };
 
+  const getPaymentDetail = async (consent, paymentId) => {
+    try {
+      const requestBody = {
+        consent: consent,
+        paymentId: paymentId,
+      };
+
+      const response = await fetch(BASE_URL + "/get-payment-detail", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      const data = await response.json();
+
+      if (data && data.status == "0000") {
+        if (data.data?.data?.payments[0]?.status == "COMPLETED") {
+          let finalData = request;
+          finalData["paymentDetail"] = data.data?.data?.payments[0];
+          localStorage.removeItem("tokenRequest");
+          localStorage.setItem("tokenRequest", JSON.stringify(finalData));
+          swal("Success!", "Payment initiated successfully!", "success").then(
+            (res) => {
+              router.push("/success");
+            }
+          );
+        }
+      } else if (data && data.status == "9999") {
+        swal("Error!", data.message, ERROR_IMAGE);
+      } else {
+        swal("Error!", "Something went wrong!", ERROR_IMAGE);
+      }
+    } catch (error) {}
+  };
+
   return (
-    <div className="container-fluid min-height min-height-100 ">
+    <div className="container">
       <div className="row">
-        <div className="col-12 ">
-          {tokenVerified ? (
-            <div className="reset-password shadow">
-              <h5 className="modal-heading  text-black text-center weight-500 mb-5">
-                Reset Password
-              </h5>
-              <div>
-                <div className="form-group mt-3">
-                  <div class="form-group m-0">
-                    <p className="text-black m-0">New Password</p>
-                    <input
-                      type={`${showNewPassword ? "text" : "password"}`}
-                      name="newPassword"
-                      className="form-control"
-                      onChange={(e) => onChange(e)}
-                      id="your_pass"
-                      placeholder="enter new password"
-                    />
-                    <img
-                      onClick={() => setShowNewPassword(!showNewPassword)}
-                      className="eye-icon cursor-pointer"
-                      src={require(`../assets/img/${
-                        showNewPassword ? "hide" : "eye"
-                      }.png`)}
-                      width="16px"
-                      alt="sing up image"
-                    />
-                  </div>
-                  <div class="form-group m-0">
-                    <p className="text-black m-0">Confirm Password</p>
-                    <input
-                      type={`${showConfirmPassword ? "text" : "password"}`}
-                      name="confirmPassword"
-                      className="form-control"
-                      onChange={(e) => onChange(e)}
-                      id="your_pass"
-                      placeholder="enter new password"
-                    />
-                    <img
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
-                      className="eye-icon cursor-pointer"
-                      src={require(`../assets/img/${
-                        showConfirmPassword ? "hide" : "eye"
-                      }.png`)}
-                      width="16px"
-                      alt="sing up image"
-                    />
-                  </div>
-                  <div className="form-group mt-3">
-                    <button
-                      type="button"
-                      class="btn purple-bg text-white w-100 mb-2"
-                      onClick={onClickChangePassword}
-                    >
-                      Change
-                    </button>
-                  </div>
-                </div>
-              </div>
+        <h1 className="my-5 text-center">/ACCOUNT</h1>
+        <div className="col-12 text-center mb-5">
+          <div className="row">
+            <div className="col-lg-2 col-0"></div>
+            <div className="col-lg-8 col-12">
+              <h3>
+                We have partnered with Yapily Connect to securely initiate
+                payment from your account at {request ? request.bankName : ""}
+              </h3>
             </div>
-          ) : (
-            <h3 className="text-white">Authenticating Please Wait...</h3>
-          )}
+            <div className="col-lg-2 col-0"></div>
+          </div>
+        </div>
+        <div className="col-12 p-5 card">
+          <div>
+            <h2>Payment Total</h2>
+            <p className="m-0">
+              Amount: {request?.paymentRequest?.amount.amount}
+            </p>
+            <p className="m-0">
+              Currency: {request?.paymentRequest?.amount.currency}
+            </p>
+          </div>
+          <div className="mt-3">
+            <h2>Payee Details</h2>
+            <p className="m-0">
+              Payee name: {request?.paymentRequest?.payee?.name}
+            </p>
+            <p className="m-0">
+              Payee account identification:{" "}
+              {
+                request?.paymentRequest?.payee?.accountIdentifications[0]
+                  ?.identification
+              }
+            </p>
+            <p className="m-0">
+              Payment Reference: {request?.paymentRequest?.reference}
+            </p>
+          </div>
+
+          <div className="mt-5">
+            <p className="m-0">
+              By using the service, you agree to Yapily Connect initiating this
+              payemnt and its Terms & Conditions and Privacy Notice{" "}
+            </p>
+          </div>
+        </div>
+        <div className="col-12 my-5">
+          <div className="row text-center">
+            <div className="col-6">
+              <button className="btn black-transparent" onClick={onClickAllow}>
+                Cancel
+              </button>
+            </div>
+            <div className="col-6">
+              <button className="btn black-btn-token" onClick={onClickAllow}>
+                Confirm
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

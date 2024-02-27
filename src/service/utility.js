@@ -1,6 +1,6 @@
 // export var BASE_URL = "https://myrizq-backend.onrender.com";
 // export var BASE_URL = "http://localhost:3001";
-export var BASE_URL = "https://corona-backend-agfd.onrender.com";
+export var BASE_URL = "http://localhost:3001/api";
 export var GOOGLE_CLIENT_ID = "242626251664-pg5lmetaaaqreh3pddstjs3q1239nqnp.apps.googleusercontent.com";
 export var ERROR_IMAGE = "https://i.ibb.co/ZcyDnfq/dizzy-robot.png";
 

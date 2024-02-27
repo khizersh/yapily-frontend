@@ -16,6 +16,11 @@
   color: black !important;
 }
 
+h1,
+h2 {
+  color: black !important;
+}
+
 .font-mon {
   font-family: "Montserrat", sans-serif;
 }
@@ -102,7 +107,7 @@
 }
 
 .bg-grey {
-  background-color: #a2a1a8;
+  background-color: #fafafa;
 }
 
 .w-30 {
