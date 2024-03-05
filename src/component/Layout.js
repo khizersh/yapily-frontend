@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { DashboardLayout } from "./DashboardLayout";
-import DesktopHeader from "./DesktopHeader";
-import Header from "./Header";
 
 const Layout = (props) => {
   const [isDashboard, setIsDashboard] = useState(false);

@@ -26,6 +26,7 @@ const Token = () => {
     }
   }, []);
 
+  // this function is used for make payment and get status of payment
   const onClickAllow = async () => {
     if (consent) {
       const requestBody = { consent: consent, request: request.paymentRequest };
@@ -52,6 +53,7 @@ const Token = () => {
     }
   };
 
+  // this function is used for getting payment detail
   const getPaymentDetail = async (consent, paymentId) => {
     try {
       const requestBody = {

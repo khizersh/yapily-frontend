@@ -25,6 +25,7 @@ const Home = () => {
     setShowBtn(false);
   }, []);
 
+  // This function is for filtering institutions
   const onChange = (e) => {
     let value = e.target.value;
     const lowercaseKeyword = value.toLowerCase();
@@ -34,6 +35,8 @@ const Home = () => {
     setFilteredInstitutions(results);
   };
 
+
+  // This function is for fetching institutions
   const getInstitutions = async () => {
     const response = await fetch(BASE_URL + "/getInstitutions", {
       method: "GET",
@@ -51,11 +54,13 @@ const Home = () => {
     }
   };
 
+  // This function is for handling click on institutions
   const onClickCard = (data) => {
     setShowBtn(true);
     setInstitution(data);
   };
 
+  // This function is for allowing process
   const onClickAllow = async () => {
     try {
       const uniqueId = generateString(10);
@@ -202,7 +207,7 @@ const Home = () => {
       {showBtn == true ? (
         <div className="overlay text-center">
           <p>
-            Yapily Connnect <u>T&C</u> and <u>Privacy Policy</u>
+            Yapily Connnect <a href="https://www.yapily.com/legal/end-user-terms" style={{color : "black"}}><u>T&C</u> </a> and <a href="https://www.yapily.com/legal/privacy-policy" style={{color : "black"}}> <u>Privacy Policy</u></a>
           </p>
           <button className="btn black-btn" onClick={onClickAllow}>
             Allow

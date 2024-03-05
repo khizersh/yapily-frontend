@@ -8,11 +8,6 @@ import Layout from "./component/Layout";
 import Home from "./pages/Home";
 import "./assets/css/argon-design-system-react.scss?v1.1.0";
 import "./assets/css/common.css";
-import Tracker from "./pages/Tracker";
-import Signup from "./pages/Signup";
-import Signin from "./pages/Signin";
-import UserList from "./pages/dashboard/UserList";
-import CustomCalender from "./pages/dashboard/CustomCalender";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Token from "./pages/Token";
 import Success from "./pages/Success";
@@ -35,31 +30,7 @@ root.render(
             exact
             render={(props) => <Success {...props} />}
           />
-          {/*   <Route
-            path="/token"
-            exact
-            render={(props) => <Token {...props} />}
-          />
-          <Route
-            path="/signup"
-            exact
-            render={(props) => <Signup {...props} />}
-          />
-          <Route
-            path="/signin"
-            exact
-            render={(props) => <Signin {...props} />}
-          />
-          <Route
-            path="/dashboard/admin/user"
-            exact
-            render={(props) => <UserList {...props} />}
-          />
-          <Route
-            path="/dashboard/admin/my-calender"
-            exact
-            render={(props) => <CustomCalender {...props} />}
-          /> */}
+ 
         </Layout>
       </Switch>
     </BrowserRouter>
