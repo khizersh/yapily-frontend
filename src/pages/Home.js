@@ -164,7 +164,7 @@ const Home = () => {
                     className="col-lg-4 col-6 cursor-pointer"
                     onClick={() => onClickCard(ins)}
                   >
-                    <div className="card card-size">
+                    <div className={`card card-size ${ins.id == institution.id ? "card-active" : ""}`}>
                       {ins?.media?.length
                         ? ins?.media.map((img) =>
                             img.type == "logo" ? (
@@ -183,7 +183,7 @@ const Home = () => {
                     className="col-lg-4 col-6 cursor-pointer"
                     onClick={() => onClickCard(ins)}
                   >
-                    <div className="card card-size">
+                    <div className={`card card-size ${ins.id == institution?.id ? "card-active" : ""}`}>
                       {ins?.media?.length
                         ? ins?.media.map((img) =>
                             img.type == "logo" ? (
